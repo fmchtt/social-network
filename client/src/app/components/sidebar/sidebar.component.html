@@ -1,0 +1,16 @@
+<aside class="w-20 bg-slate-800 h-full flex items-center flex-col gap-2 py-4">
+  <div
+    class="size-16 bg-slate-700 rounded-full flex justify-center items-center cursor-pointer hover:bg-slate-600"
+  >
+    +
+  </div>
+  @for (server of servers(); track server.identifier) {
+    <div
+      class="size-16 bg-slate-700 rounded-full flex justify-center items-center cursor-pointer hover:bg-slate-600"
+      [routerLink]="server.identifier"
+      routerLinkActive="bg-slate-600 border"
+    >
+      {{ getInitials(server.name) }}
+    </div>
+  }
+</aside>

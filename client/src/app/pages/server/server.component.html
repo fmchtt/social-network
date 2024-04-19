@@ -1,0 +1,10 @@
+<section class="w-full h-full">
+  @if (server()) {
+    <app-channels
+      [serverName]="server()?.name || ''"
+      [channels]="server()?.channels || []"
+    ></app-channels>
+  } @else {
+    <h1>Welcome!!</h1>
+  }
+</section>
