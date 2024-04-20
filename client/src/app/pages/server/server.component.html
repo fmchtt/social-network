@@ -1,9 +1,16 @@
 <section class="w-full h-full">
   @if (server()) {
-    <app-channels
-      [serverName]="server()?.name || ''"
-      [channels]="server()?.channels || []"
-    ></app-channels>
+    <div class="flex w-full h-full">
+      <app-channels
+        [serverName]="server()?.name || ''"
+        [serverId]="server()?.identifier || ''"
+        [channels]="server()?.channels || []"
+        (onChannelSelect)="onChannelSelect($event)"
+        [selectedChannelId]="channelSelected()?.id"
+        (onChannelCreated)="onChannelCreated($event)"
+      ></app-channels>
+      <app-messages class="flex-1" [channel]="channelSelected()"></app-messages>
+    </div>
   } @else {
     <h1>Welcome!!</h1>
   }

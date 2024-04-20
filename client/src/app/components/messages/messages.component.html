@@ -1,0 +1,38 @@
+<div class="h-full flex flex-col flex-1">
+  <div class="h-16 bg-slate-700 flex items-center p-4">
+    <h1 class="font-bold">{{ channel?.name }}</h1>
+  </div>
+  <div class="flex-1 bg-slate-800 flex flex-col-reverse gap-4 p-4">
+    @for (message of messages(); track message.id) {
+      <div class="bg-slate-500 rounded p-2 flex flex-col">
+        <div class="flex justify-between">
+          <span class="font-bold">{{ message.author.username }}</span>
+          <span>{{ parseDate(message.createdAt) }}</span>
+        </div>
+        <hr />
+        <div>
+          <span class="font-thin">{{ message.text }}</span>
+          @if (message.createdAt != message.updatedAt) {
+            <span class="font-thin text-sm"> (edited)</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+  <form class="h-16 bg-slate-900 flex gap-2 p-4" (submit)="onMessageSubmit()">
+    <input
+      type="text"
+      class="rounded bg-slate-700 flex-1 p-2"
+      [ngModel]="text()"
+      [ngModelOptions]="{ standalone: true }"
+      (ngModelChange)="text.set($event)"
+      placeholder="Type your message"
+    />
+    <button
+      type="submit"
+      class="rounded bg-slate-700 p-3 flex items-center justify-center cursor-pointer hover:bg-slate-600"
+    >
+      >
+    </button>
+  </form>
+</div>

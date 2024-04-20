@@ -1,7 +1,9 @@
 <main class="bg-slate-950 h-screen w-screen text-gray-200">
   <app-header></app-header>
-  <div class="h-[calc(100%-4rem)] flex">
+  <div class="h-[calc(100%-4rem)] w-full flex">
     <app-sidebar></app-sidebar>
-    <div><router-outlet></router-outlet></div>
+    <div class="w-full">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </main>

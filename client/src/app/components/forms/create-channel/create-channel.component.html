@@ -1,0 +1,11 @@
+<form class="flex flex-col gap-1" (submit)="handleSubmit()">
+  <label>Name:</label>
+  <input
+    type="text"
+    class="bg-slate-700 rounded p-2"
+    [ngModel]="name()"
+    (ngModelChange)="handleNameChange($event)"
+    [ngModelOptions]="{ standalone: true }"
+  />
+  <button type="submit" class="bg-slate-800 rounded p-2">Create</button>
+</form>

@@ -1,28 +1,33 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Server, ServerService } from '../../services/server.service';
 import { NgFor } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ModalComponent } from '../modal/modal.component';
+import { CreateServerFormComponent } from '../forms/create-server/create-server.component';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [NgFor, RouterLink, RouterLinkActive],
+  imports: [
+    NgFor,
+    RouterLink,
+    RouterLinkActive,
+    ModalComponent,
+    CreateServerFormComponent,
+  ],
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
   constructor(
-    private serverService: ServerService,
+    public serverService: ServerService,
     private router: Router,
   ) {}
 
-  @Input() selectedServer?: string;
-
   servers = signal<Server[]>([]);
+  createServerModalOpen = signal(false);
 
   ngOnInit(): void {
-    this.serverService.getServers().subscribe((response) => {
-      this.servers.set(response);
-    });
+    this.serverService.getServers().subscribe();
   }
 
   public getInitials(value: string) {
@@ -33,5 +38,13 @@ export class SidebarComponent implements OnInit {
 
   public onServerClick(id: string) {
     this.router.navigate(['server', id]);
+  }
+
+  public openCreateServerModal() {
+    this.createServerModalOpen.set(true);
+  }
+
+  public closeCreateServerModal() {
+    this.createServerModalOpen.set(false);
   }
 }
