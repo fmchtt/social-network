@@ -1,15 +1,15 @@
-<aside class="w-20 bg-slate-800 h-full flex items-center flex-col gap-2 py-4">
+<aside class="w-20 bg-indigo-950 h-full flex items-center flex-col gap-2 py-4">
   <div
-    class="size-16 bg-slate-700 rounded-full flex justify-center items-center cursor-pointer hover:bg-slate-600"
+    class="size-16 bg-indigo-900 rounded-full flex justify-center items-center cursor-pointer hover:bg-violet-700"
     (click)="openCreateServerModal()"
   >
     +
   </div>
   @for (server of serverService.servers(); track server.identifier) {
     <div
-      class="size-16 bg-slate-700 rounded-full flex justify-center items-center cursor-pointer hover:bg-slate-600"
+      class="size-16 bg-indigo-900 rounded-full flex justify-center items-center cursor-pointer hover:bg-violet-600"
       [routerLink]="server.identifier"
-      routerLinkActive="bg-slate-600 border"
+      routerLinkActive="bg-indigo-600 border"
     >
       {{ getInitials(server.name) }}
     </div>

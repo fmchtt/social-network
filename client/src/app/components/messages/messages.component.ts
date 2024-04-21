@@ -4,12 +4,30 @@ import { Channel } from '../../services/server.service';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-messages',
   standalone: true,
   imports: [FormsModule, NgFor, NgIf],
   templateUrl: './messages.component.html',
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({
+          opacity: 0,
+        }),
+        animate(600, style({ opacity: 1 })),
+      ]),
+      transition('* => void', [
+        style({
+          opacity: 1,
+        }),
+        animate(600, style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class MessagesComponent {
   private _channel: Channel | undefined;
@@ -24,7 +42,10 @@ export class MessagesComponent {
     return this._channel;
   }
 
-  constructor(private messageService: MessageService) {}
+  constructor(
+    public authService: AuthService,
+    private messageService: MessageService,
+  ) {}
 
   messages = signal<Message[]>([]);
   text = signal<string>('');
@@ -78,5 +99,11 @@ export class MessagesComponent {
 
   parseDate(date: string) {
     return new Date(date).toLocaleDateString();
+  }
+
+  updateMessage(messageId: number) {}
+
+  deleteMessage(messageId: number) {
+    this.messageService.deleteMessage(messageId).subscribe();
   }
 }

@@ -2,9 +2,7 @@
   @if (server()) {
     <div class="flex w-full h-full">
       <app-channels
-        [serverName]="server()?.name || ''"
-        [serverId]="server()?.identifier || ''"
-        [channels]="server()?.channels || []"
+        [server]="server()"
         (onChannelSelect)="onChannelSelect($event)"
         [selectedChannelId]="channelSelected()?.id"
       ></app-channels>

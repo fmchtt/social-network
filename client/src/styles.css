@@ -12,26 +12,17 @@
   height: 0px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3730a3;
+  background: #4f46e5;
   border: 0px none #ffffff;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4338ca;
-}
-::-webkit-scrollbar-thumb:active {
-  background: #000000;
+  background: #6366f1;
 }
 ::-webkit-scrollbar-track {
-  background: #44403c;
+  background: #1e1b4b;
   border: 0px none #ffffff;
   border-radius: 4px;
-}
-::-webkit-scrollbar-track:hover {
-  background: #44403c;
-}
-::-webkit-scrollbar-track:active {
-  background: #333333;
 }
 ::-webkit-scrollbar-corner {
   background: transparent;

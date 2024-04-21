@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit, effect, signal } from '@angular/core';
+import { Injectable, effect, signal } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 
 export type LoginParams = {
@@ -16,8 +16,9 @@ type AccessTokenResponse = {
 };
 
 export type User = {
+  id: number;
+  name: string;
   username: string;
-  password: string;
 };
 
 @Injectable({

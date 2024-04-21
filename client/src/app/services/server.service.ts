@@ -20,6 +20,7 @@ export type DetailedServer = {
   id: number;
   name: string;
   identifier: string;
+  ownerId: number;
   participants: User[];
   channels: Channel[];
 };

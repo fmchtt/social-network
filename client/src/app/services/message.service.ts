@@ -74,4 +74,8 @@ export class MessageService {
   public sendMessage(channelId: number, text: string) {
     return this.httpClient.post(`message/${channelId}`, { text });
   }
+
+  public deleteMessage(messageId: number) {
+    return this.httpClient.delete(`message/${messageId}`);
+  }
 }

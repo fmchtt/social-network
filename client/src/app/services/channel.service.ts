@@ -11,4 +11,8 @@ export class ChannelService {
   public createChannel(serverId: string, name: string) {
     return this.httpClient.post<Channel>(`channel/${serverId}`, { name });
   }
+
+  public deleteChannel(channelId: number) {
+    return this.httpClient.delete(`channel/${channelId}`);
+  }
 }

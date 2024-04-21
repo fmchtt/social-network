@@ -29,7 +29,7 @@ export class ServerComponent {
     return this._serverId();
   }
 
-  server = signal<DetailedServer | undefined>(undefined);
+  server = signal<DetailedServer>({} as DetailedServer);
   channelSelected = signal<Channel | undefined>(undefined);
 
   onChannelSelect(channelId: number) {
