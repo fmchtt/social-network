@@ -1,30 +1,34 @@
 import { Component, signal } from '@angular/core';
-import { AuthService, LoginParams } from '../../../services/auth.service';
-import { Router } from '@angular/router';
+import { AuthService, RegisterParams } from '../../services/auth.service';
+import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'form-login',
+  selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
-  templateUrl: './login.component.html',
+  imports: [FormsModule, RouterLink],
+  templateUrl: './register.component.html',
 })
-export class LoginFormComponent {
+export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
   ) {}
 
-  loginParams = signal<LoginParams>({ username: '', password: '' });
+  registerParams = signal<RegisterParams>({
+    username: '',
+    password: '',
+    name: '',
+  });
   loading = signal(false);
   errorMessage = signal({} as { [key: string]: string });
 
-  public login() {
+  public register() {
     this.errorMessage.set({});
 
-    if (!this.loginParams().username) {
+    if (!this.registerParams().username) {
       this.errorMessage.update((prev) => {
         prev['username'] = 'Username is required';
         return prev;
@@ -32,7 +36,7 @@ export class LoginFormComponent {
       return;
     }
 
-    if (!this.loginParams().password) {
+    if (!this.registerParams().password) {
       this.errorMessage.update((prev) => {
         prev['password'] = 'Password is required';
         return prev;
@@ -41,7 +45,7 @@ export class LoginFormComponent {
     }
     this.loading.set(true);
     this.authService
-      .login(this.loginParams())
+      .register(this.registerParams())
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.errorMessage.set({ form: err.error.message });
@@ -55,15 +59,22 @@ export class LoginFormComponent {
   }
 
   public onPasswordChange(value: string) {
-    this.loginParams.update((prev) => {
+    this.registerParams.update((prev) => {
       prev.password = value;
       return prev;
     });
   }
 
   public onUserNameChange(value: string) {
-    this.loginParams.update((prev) => {
+    this.registerParams.update((prev) => {
       prev.username = value;
+      return prev;
+    });
+  }
+
+  public onNameChange(value: string) {
+    this.registerParams.update((prev) => {
+      prev.name = value;
       return prev;
     });
   }

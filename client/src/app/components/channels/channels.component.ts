@@ -41,6 +41,7 @@ export class ChannelsComponent {
   @Output() onChannelSelect = new EventEmitter<number>();
 
   public createChannelModalOpen = signal(false);
+  public copied = signal(false);
 
   public onChannelClick(channelId: number) {
     this.onChannelSelect.emit(channelId);
@@ -62,5 +63,14 @@ export class ChannelsComponent {
     event.preventDefault();
     event.stopPropagation();
     this.channelService.deleteChannel(channelId).subscribe();
+  }
+
+  public copyIdentifierToClipboard() {
+    if (this.copied()) return;
+    window.navigator.clipboard.writeText(this.server.identifier);
+    this.copied.set(true);
+    setTimeout(() => {
+      this.copied.set(false);
+    }, 2000);
   }
 }

@@ -1,11 +1,36 @@
 <form class="flex flex-col gap-1" (submit)="handleSubmit()">
-  <label>Name:</label>
-  <input
-    type="text"
-    class="bg-slate-700 rounded p-2"
-    [ngModel]="name()"
-    (ngModelChange)="handleNameChange($event)"
-    [ngModelOptions]="{ standalone: true }"
-  />
-  <button type="submit" class="bg-slate-800 rounded p-2">Create</button>
+  @if (mode() === "name") {
+    <label>Name:</label>
+    <input
+      type="text"
+      class="bg-indigo-800 rounded p-2"
+      [ngModel]="name()"
+      (ngModelChange)="handleNameChange($event)"
+      [ngModelOptions]="{ standalone: true }"
+    />
+    <span
+      >Want to join a server ?
+      <button (click)="handleMode('identifier')" class="font-bold">
+        Join
+      </button></span
+    >
+  }
+  @if (mode() === "identifier") {
+    <label>identifier:</label>
+    <input
+      type="text"
+      class="bg-indigo-800 rounded p-2"
+      [ngModel]="identifier()"
+      (ngModelChange)="handleIdentifierChange($event)"
+      [ngModelOptions]="{ standalone: true }"
+    />
+    <span
+      >Want to create a server ?
+      <button (click)="handleMode('name')" class="font-bold">
+        Create
+      </button></span
+    >
+  }
+  <span class="text-red-300 font-bold">{{ errorMessage() }}</span>
+  <button type="submit" class="bg-indigo-950 rounded p-2">Create</button>
 </form>

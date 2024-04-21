@@ -9,5 +9,6 @@ import { ChannelModule } from 'src/channel/channel.module';
   imports: [PrismaModule, ChannelModule],
   controllers: [MessageController],
   providers: [MessageService, MessageRepository],
+  exports: [MessageRepository, MessageService],
 })
 export class MessageModule {}

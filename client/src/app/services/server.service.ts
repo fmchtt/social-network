@@ -101,4 +101,17 @@ export class ServerService {
         );
     });
   }
+
+  public connectServer(serverIdentifier: string) {
+    return this.httpClient
+      .post<Server>(`server/connect/${serverIdentifier}`, {})
+      .pipe(
+        tap((server) => {
+          this.servers.update((prev) => {
+            prev.push(server);
+            return prev;
+          });
+        }),
+      );
+  }
 }

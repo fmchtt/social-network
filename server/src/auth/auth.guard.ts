@@ -51,7 +51,6 @@ export class AuthGuard implements CanActivate {
       });
       request['user'] = await this.userRepository.getById(payload.sub);
     } catch (e) {
-      console.log(e);
       throw new UnauthorizedException({ message: 'Invalid Token' });
     }
 

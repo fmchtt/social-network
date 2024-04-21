@@ -51,7 +51,7 @@ export class ServerController {
     command.identifier = identifier;
     command.userId = request.user.id;
     const server = await this.serverService.connectServer(command);
-    return new ServerDetailedResult(server);
+    return new ServerResult(server, request.user.id);
   }
 
   @Post()

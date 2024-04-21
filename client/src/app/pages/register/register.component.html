@@ -2,9 +2,21 @@
   <div class="bg-indigo-950 w-[30%]">
     <form
       class="text-gray-100 flex flex-col gap-2 w-full p-10"
-      (submit)="login()"
+      (submit)="register()"
     >
-      <h1 class="text-center text-2xl text-white">Login</h1>
+      <h1 class="text-center text-2xl text-white">Register</h1>
+      <div class="flex flex-col gap-1">
+        <label>Name:</label>
+        <input
+          type="text"
+          class="p-2 rounded bg-indigo-800 text-white placeholder:text-white"
+          placeholder="ex: Walter"
+          [ngModelOptions]="{ standalone: true }"
+          [ngModel]="registerParams().name"
+          (ngModelChange)="onNameChange($event)"
+        />
+        <span>{{ errorMessage()["username"] }}</span>
+      </div>
       <div class="flex flex-col gap-1">
         <label>Username:</label>
         <input
@@ -12,7 +24,7 @@
           class="p-2 rounded bg-indigo-800 text-white placeholder:text-white"
           placeholder="ex: Walter"
           [ngModelOptions]="{ standalone: true }"
-          [ngModel]="loginParams().username"
+          [ngModel]="registerParams().username"
           (ngModelChange)="onUserNameChange($event)"
         />
         <span>{{ errorMessage()["username"] }}</span>
@@ -24,16 +36,16 @@
           class="p-2 rounded bg-indigo-800 text-white placeholder:text-white"
           placeholder="Ex: ********"
           [ngModelOptions]="{ standalone: true }"
-          [ngModel]="loginParams().password"
+          [ngModel]="registerParams().password"
           (ngModelChange)="onPasswordChange($event)"
         />
         <span>{{ errorMessage()["password"] }}</span>
       </div>
       <span>{{ errorMessage()["form"] }}</span>
       <span
-        >Don't have a account ?
-        <a class="text-violet-400 font-semibold" routerLink="/register"
-          >Register</a
+        >Already have a account ?
+        <a class="text-violet-400 font-semibold" routerLink="/login"
+          >Login</a
         ></span
       >
       <button

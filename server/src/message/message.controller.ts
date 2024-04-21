@@ -46,7 +46,7 @@ export class MessageController {
   ) {
     command.channelId = channelId;
     command.userId = request.user.id;
-    const message = await this.messageService.createMessage(command);
+    const message = await this.messageService.create(command);
     return new MessageResult(message);
   }
 
@@ -59,7 +59,7 @@ export class MessageController {
     command.userId = request.user.id;
     command.messageId = messageId;
 
-    const message = await this.messageService.editMessage(command);
+    const message = await this.messageService.edit(command);
     return new MessageResult(message);
   }
 
@@ -69,6 +69,6 @@ export class MessageController {
     @Req() request: Request,
   ) {
     const command = new DeleteMessageCommand(request.user.id, messageId);
-    return await this.messageService.deleteMessage(command);
+    return await this.messageService.delete(command);
   }
 }

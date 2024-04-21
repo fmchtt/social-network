@@ -35,7 +35,7 @@ export class MessageService {
     );
   }
 
-  public async createMessage(command: CreateMessageCommand) {
+  public async create(command: CreateMessageCommand) {
     const channel = await this.channelRepository.verifyParticipant(
       command.channelId,
       command.userId,
@@ -51,7 +51,7 @@ export class MessageService {
     return message;
   }
 
-  public async editMessage(command: EditMessageCommand) {
+  public async edit(command: EditMessageCommand) {
     const message = await this.messageRepository.getById(command.messageId);
     if (message.authorId !== command.userId) {
       throw new UnauthorizedException({
@@ -69,7 +69,7 @@ export class MessageService {
     return messageEdited;
   }
 
-  public async deleteMessage(command: DeleteMessageCommand) {
+  public async delete(command: DeleteMessageCommand) {
     const message = await this.messageRepository.getById(command.messageId);
     if (message.authorId !== command.userId) {
       throw new UnauthorizedException({

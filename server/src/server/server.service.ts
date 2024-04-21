@@ -13,10 +13,16 @@ import { ServerRepository } from './server.repository';
 import { MessageResult } from 'src/app.results';
 import { ServerDetailedResult, ServerResult } from './server.results';
 import { GetServerByIdentifier, GetUserServersQuery } from './server.queries';
+import { MessageRepository } from 'src/message/message.repository';
+import { CreateMessageCommand } from 'src/message/message.commands';
+import { MessageService } from 'src/message/message.service';
 
 @Injectable()
 export class ServerService {
-  constructor(private serverRepository: ServerRepository) {}
+  constructor(
+    private serverRepository: ServerRepository,
+    private messageService: MessageService,
+  ) {}
 
   public async getServers(query: GetUserServersQuery) {
     const servers = await this.serverRepository.getParticipating(query.userId);
@@ -40,10 +46,19 @@ export class ServerService {
     }
     await this.serverRepository.connect(server.id, command.userId);
 
-    return await this.serverRepository.getDetailsByIdentifier(
+    const detailedServer = await this.serverRepository.getDetailsByIdentifier(
       command.identifier,
       command.userId,
     );
+
+    const messageCommand = new CreateMessageCommand();
+    messageCommand.channelId = detailedServer.channels.at(0).id;
+    messageCommand.userId = command.userId;
+    messageCommand.text = 'Hiii! I arrieved at the server!!';
+
+    await this.messageService.create(messageCommand);
+
+    return detailedServer;
   }
 
   public async createServer(command: CreateServerCommand) {

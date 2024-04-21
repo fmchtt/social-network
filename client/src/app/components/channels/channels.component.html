@@ -3,10 +3,23 @@
     class="bg-indigo-900 flex flex-col h-full w-full gap-2 rounded-t-xl border-x border-x-violet-900"
   >
     <div class="flex justify-between items-center m-2">
-      <h1 class="text-xl">{{ server.name }}</h1>
-      <i class="text-2xl cursor-pointer" (click)="openCreateChannelModalOpen()"
-        >+</i
-      >
+      <h1 class="text-xl cursor-pointer" (click)="copyIdentifierToClipboard()">
+        {{ server.name }}
+        <i class="text-xs font-thin">
+          @if (copied()) {
+            (copied!)
+          } @else {
+            (click to copy identifier)
+          }
+        </i>
+      </h1>
+      @if (server.ownerId === authService.user()?.id) {
+        <i
+          class="text-2xl cursor-pointer"
+          (click)="openCreateChannelModalOpen()"
+          >+</i
+        >
+      }
     </div>
     <div class="flex-1 mx-2 flex flex-col gap-2 overflow-y-auto pr-2">
       @for (channel of server.channels; track channel.id) {
