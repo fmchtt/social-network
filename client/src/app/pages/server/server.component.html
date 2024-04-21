@@ -7,7 +7,6 @@
         [channels]="server()?.channels || []"
         (onChannelSelect)="onChannelSelect($event)"
         [selectedChannelId]="channelSelected()?.id"
-        (onChannelCreated)="onChannelCreated($event)"
       ></app-channels>
       <app-messages class="flex-1" [channel]="channelSelected()"></app-messages>
     </div>

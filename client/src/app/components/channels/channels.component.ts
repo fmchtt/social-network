@@ -20,7 +20,6 @@ export class ChannelsComponent {
   @Input() selectedChannelId: number | undefined;
 
   @Output() onChannelSelect = new EventEmitter<number>();
-  @Output() onChannelCreated = new EventEmitter<Channel>();
 
   public createChannelModalOpen = signal(false);
 
@@ -36,8 +35,7 @@ export class ChannelsComponent {
     this.createChannelModalOpen.set(false);
   }
 
-  public handleCreatedChannel(channel: Channel) {
+  public handleCreatedChannel() {
     this.closeCreateChannelModalOpen();
-    this.onChannelCreated.emit(channel);
   }
 }

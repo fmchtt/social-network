@@ -12,12 +12,19 @@ import {
 } from './message.commands';
 import { ChannelRepository } from 'src/channel/channel.repository';
 import { MessageResult } from 'src/app.results';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import {
+  MessageCreatedEvent,
+  MessageDeletedEvent,
+  MessageEditedEvent,
+} from './message.events';
 
 @Injectable()
 export class MessageService {
   constructor(
     private messageRepository: MessageRepository,
     private channelRepository: ChannelRepository,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   public async getMessages(query: GetMessagesQuery) {
@@ -37,7 +44,11 @@ export class MessageService {
       throw new NotFoundException({ message: 'Channel not found' });
     }
 
-    return await this.messageRepository.create(command);
+    const message = await this.messageRepository.create(command);
+
+    this.eventEmitter.emit('message.created', new MessageCreatedEvent(message));
+
+    return message;
   }
 
   public async editMessage(command: EditMessageCommand) {
@@ -48,7 +59,14 @@ export class MessageService {
       });
     }
 
-    return await this.messageRepository.edit(command);
+    const messageEdited = await this.messageRepository.edit(command);
+
+    this.eventEmitter.emit(
+      'message.edited',
+      new MessageEditedEvent(messageEdited),
+    );
+
+    return messageEdited;
   }
 
   public async deleteMessage(command: DeleteMessageCommand) {
@@ -60,6 +78,8 @@ export class MessageService {
     }
 
     await this.messageRepository.delete(message.id);
+
+    this.eventEmitter.emit('message.deleted', new MessageDeletedEvent(message));
 
     return new MessageResult('Message delete sucessfully');
   }

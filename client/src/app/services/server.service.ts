@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { User } from './auth.service';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { SocketEvent, SocketService } from './socket.service';
+import { EventSubscribed } from '../global.types';
 
 export type Server = {
   name: string;
@@ -15,17 +17,23 @@ export type Channel = {
 };
 
 export type DetailedServer = {
+  id: number;
   name: string;
   identifier: string;
   participants: User[];
   channels: Channel[];
 };
 
+export type SubscribedChannel = EventSubscribed<Channel>;
+
 @Injectable({
   providedIn: 'root',
 })
 export class ServerService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private socketService: SocketService,
+  ) {}
 
   public servers = signal<Server[]>([]);
 
@@ -50,5 +58,46 @@ export class ServerService {
         });
       }),
     );
+  }
+
+  public listenServer(serverId: number) {
+    this.socketService.socket.emit(
+      'server',
+      { type: 'join', serverId },
+      (value: string) => {
+        console.info('JOINING SERVER:', serverId, 'STATUS', value);
+      },
+    );
+
+    return new Observable<SubscribedChannel>((subscriber) => {
+      this.socketService.socket.on(
+        'channel.created',
+        (data: SocketEvent<Channel>) => {
+          subscriber.next({ type: 'created', data: data.payload });
+        },
+      );
+
+      this.socketService.socket.on(
+        'channel.edited',
+        (data: SocketEvent<Channel>) => {
+          subscriber.next({ type: 'edited', data: data.payload });
+        },
+      );
+
+      this.socketService.socket.on(
+        'channel.deleted',
+        (data: SocketEvent<Channel>) => {
+          subscriber.next({ type: 'deleted', data: data.payload });
+        },
+      );
+      return () =>
+        this.socketService.socket.emit(
+          'server',
+          { type: 'leave', serverId },
+          (value: string) => {
+            console.info('LEAVING SERVER:', serverId, 'STATUS', value);
+          },
+        );
+    });
   }
 }

@@ -6,12 +6,15 @@ import { AuthModule } from './auth/auth.module';
 import { ServerModule } from './server/server.module';
 import { ChannelModule } from './channel/channel.module';
 import { MessageModule } from './message/message.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    EventEmitterModule.forRoot(),
     PrismaModule,
     AuthModule,
     UserModule,
@@ -19,6 +22,6 @@ import { MessageModule } from './message/message.module';
     ChannelModule,
     MessageModule,
   ],
-  providers: [],
+  providers: [AppGateway],
 })
 export class AppModule {}

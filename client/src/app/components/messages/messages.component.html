@@ -2,7 +2,9 @@
   <div class="h-16 bg-slate-700 flex items-center p-4">
     <h1 class="font-bold">{{ channel?.name }}</h1>
   </div>
-  <div class="flex-1 bg-slate-800 flex flex-col-reverse gap-4 p-4">
+  <div
+    class="flex-1 bg-slate-800 flex flex-col-reverse gap-4 p-4 overflow-y-auto"
+  >
     @for (message of messages(); track message.id) {
       <div class="bg-slate-500 rounded p-2 flex flex-col">
         <div class="flex justify-between">

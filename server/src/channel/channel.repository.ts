@@ -82,6 +82,6 @@ export class ChannelRepository {
   }
 
   public async delete(channelId: number) {
-    await this.prisma.channel.delete({ where: { id: channelId } });
+    return await this.prisma.channel.delete({ where: { id: channelId } });
   }
 }

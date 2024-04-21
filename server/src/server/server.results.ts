@@ -15,6 +15,7 @@ export class ServerResult {
 }
 
 export class ServerDetailedResult {
+  id: number;
   name: string;
   identifier: string;
   participants: UserResult[];
@@ -26,6 +27,7 @@ export class ServerDetailedResult {
       channels: Channel[];
     },
   ) {
+    this.id = server.id;
     this.name = server.name;
     this.identifier = server.identifier;
     this.participants = server.participants.map(

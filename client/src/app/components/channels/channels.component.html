@@ -6,7 +6,7 @@
         >+</i
       >
     </div>
-    <div class="flex-1 mx-2 flex flex-col gap-2">
+    <div class="flex-1 mx-2 flex flex-col gap-2 overflow-y-auto pr-2">
       @for (channel of channels; track channel.id) {
         <div
           class="rounded p-2"
@@ -36,7 +36,7 @@
     (closeModal)="closeCreateChannelModalOpen()"
   >
     <app-create-channel-form
-      (createComplete)="handleCreatedChannel($event)"
+      (createComplete)="handleCreatedChannel()"
       [serverId]="serverId"
     ></app-create-channel-form>
   </app-modal>
