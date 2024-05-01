@@ -1,0 +1,51 @@
+services:
+  proxy:
+    image: social-network/proxy
+    build:
+      context: "../"
+      dockerfile: ./docker/nginx.dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - "app-network"
+    depends_on:
+      - api
+  api:
+    image: social-network/server
+    build:
+      context: "../"
+      dockerfile: ./docker/server.dockerfile
+    environment:
+      DATABASE_URL: "sqlserver://database:1433;database=SocialNetwork;user=sa;password=docker1234@!;trustServerCertificate=true"
+      SECRET_KEY: "a2b74dc0-26df-43b0-a159-6a9850f7f199"
+    expose:
+      - "3000"
+    networks:
+      - "app-network"
+    depends_on:
+      - database
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+  database:
+    image: mcr.microsoft.com/mssql/server:latest
+    expose:
+      - "1433"
+    networks:
+      - app-network
+    environment:
+      MSSQL_IP_ADDRESS: 0.0.0.0
+      MSSQL_SA_PASSWORD: docker1234@!
+      MSSQL_PID: Express
+      ACCEPT_EULA: Y
+    volumes:
+      - social-network-database:/var/opt/mssql
+
+volumes:
+  social-network-database:
+
+networks:
+  app-network: {}

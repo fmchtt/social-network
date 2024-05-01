@@ -11,7 +11,9 @@ export type SocketEvent<T> = {
   providedIn: 'root',
 })
 export class SocketService {
-  constructor() {}
+  public socket;
 
-  public socket = io(environment.SOCKET_URL);
+  constructor() {
+    this.socket = io(environment.SOCKET_URL || `ws://${window.location.host}`);
+  }
 }

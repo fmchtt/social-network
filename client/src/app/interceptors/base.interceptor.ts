@@ -4,7 +4,7 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 
 export const baseInterceptor: HttpInterceptorFn = (req, next) => {
-  const baseUrl = environment.BASE_URL;
+  const baseUrl = environment.BASE_URL || '/api';
 
   let headers: HttpHeaders = new HttpHeaders();
   const authToken = inject(AuthService).authToken();
