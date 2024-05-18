@@ -4,6 +4,7 @@ import { NgFor } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ModalComponent } from '../modal/modal.component';
 import { CreateServerFormComponent } from '../forms/create-server/create-server.component';
+import { CircleComponent } from './components/circle.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,18 +12,14 @@ import { CreateServerFormComponent } from '../forms/create-server/create-server.
   imports: [
     NgFor,
     RouterLink,
-    RouterLinkActive,
+    CircleComponent,
     ModalComponent,
     CreateServerFormComponent,
   ],
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
-  constructor(
-    public serverService: ServerService,
-    private router: Router,
-  ) {}
-
+  constructor(public serverService: ServerService, private router: Router) {}
   servers = signal<Server[]>([]);
   createServerModalOpen = signal(false);
 

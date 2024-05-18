@@ -14,6 +14,15 @@ export class SocketService {
   public socket;
 
   constructor() {
-    this.socket = io(environment.SOCKET_URL || `ws://${window.location.host}`);
+    this.socket = io(
+      environment.SOCKET_URL ||
+        `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${
+          window.location.host
+        }`,
+      {
+        transports: ['websocket'],
+        secure: true,
+      }
+    );
   }
 }

@@ -1,58 +1,18 @@
 <div class="h-full flex flex-col flex-1">
   <div
-    class="h-16 bg-indigo-950 border-b border-b-violet-900 flex items-center p-4"
+    class="min-h-20 border-b flex items-center p-4"
   >
     <h1 class="font-bold">{{ channel?.name }}</h1>
   </div>
   <div
-    class="flex-1 bg-indigo-900 flex flex-col-reverse gap-4 p-4 overflow-y-auto"
+    class="flex-1 flex flex-col-reverse gap-4 p-4 overflow-y-auto"
   >
     @for (message of messages(); track message.id) {
-      <div @fade class="rounded-xl p-3 flex flex-col w-fit bg-indigo-950">
-        <div class="flex items-center gap-2">
-          <span class="font-bold">{{ message.author.username }}</span>
-          <span class="text-xs font-thin">{{
-            parseDate(message.createdAt)
-          }}</span>
-          @if (message.author.id === authService.user()?.id) {
-            <span
-              class="text-sm text-green-200 cursor-pointer"
-              (click)="updateMessage(message.id)"
-              >Update</span
-            >
-            <span
-              class="text-sm text-red-200 cursor-pointer"
-              (click)="deleteMessage(message.id)"
-              >Delete</span
-            >
-          }
-        </div>
-        <div>
-          <p>{{ message.text }}</p>
-        </div>
-        @if (message.createdAt != message.updatedAt) {
-          <span class="font-thin text-xs"> (edited)</span>
-        }
-      </div>
+      <messages-message
+        [message]="message"
+        [canEdit]="message.author.id === authService.user()?.id"
+      ></messages-message>
     }
   </div>
-  <form
-    class="h-16 flex gap-2 p-4 border-t border-t-violet-900"
-    (submit)="onMessageSubmit()"
-  >
-    <input
-      type="text"
-      class="rounded bg-indigo-800 flex-1 p-2 placeholder:text-white"
-      [ngModel]="text()"
-      [ngModelOptions]="{ standalone: true }"
-      (ngModelChange)="text.set($event)"
-      placeholder="Type your message"
-    />
-    <button
-      type="submit"
-      class="rounded bg-indigo-800 p-3 flex items-center justify-center cursor-pointer hover:bg-indigo-600"
-    >
-      >
-    </button>
-  </form>
+  <message-create-form [channel]="channel"></message-create-form>
 </div>

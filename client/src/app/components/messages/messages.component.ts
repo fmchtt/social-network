@@ -1,33 +1,17 @@
 import { Component, Input, signal } from '@angular/core';
 import { Message, MessageService } from '../../services/message.service';
 import { Channel } from '../../services/server.service';
-import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
-import { animate, style, transition, trigger } from '@angular/animations';
+import { CreateMessageComponent } from './components/create-message.component';
+import { MessageComponent } from './components/message.component';
 
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [FormsModule, NgFor, NgIf],
+  imports: [NgFor, NgIf, CreateMessageComponent, MessageComponent],
   templateUrl: './messages.component.html',
-  animations: [
-    trigger('fade', [
-      transition('void => *', [
-        style({
-          opacity: 0,
-        }),
-        animate(600, style({ opacity: 1 })),
-      ]),
-      transition('* => void', [
-        style({
-          opacity: 1,
-        }),
-        animate(600, style({ opacity: 0 })),
-      ]),
-    ]),
-  ],
 })
 export class MessagesComponent {
   private _channel: Channel | undefined;
@@ -44,11 +28,10 @@ export class MessagesComponent {
 
   constructor(
     public authService: AuthService,
-    private messageService: MessageService,
+    private messageService: MessageService
   ) {}
 
   messages = signal<Message[]>([]);
-  text = signal<string>('');
 
   private messageListener: Subscription | undefined;
   updateMessages() {
@@ -88,22 +71,5 @@ export class MessagesComponent {
           return;
         }
       });
-  }
-
-  onMessageSubmit() {
-    if (!this.channel?.id) return;
-    this.messageService
-      .sendMessage(this.channel.id, this.text())
-      .subscribe(() => this.text.set(''));
-  }
-
-  parseDate(date: string) {
-    return new Date(date).toLocaleDateString();
-  }
-
-  updateMessage(messageId: number) {}
-
-  deleteMessage(messageId: number) {
-    this.messageService.deleteMessage(messageId).subscribe();
   }
 }

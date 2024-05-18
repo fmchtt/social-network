@@ -41,7 +41,7 @@ export class AuthService {
           this.authToken.set(null);
           localStorage.removeItem('accessToken');
           return throwError(() => err);
-        }),
+        })
       )
       .subscribe((response) => {
         this.user.set(response);
@@ -53,7 +53,7 @@ export class AuthService {
       tap((response) => {
         localStorage.setItem('accessToken', response.accessToken);
         this.authToken.set(response.accessToken);
-      }),
+      })
     );
   }
 
@@ -64,7 +64,12 @@ export class AuthService {
         tap((response) => {
           localStorage.setItem('accessToken', response.accessToken);
           this.authToken.set(response.accessToken);
-        }),
+        })
       );
+  }
+
+  public logout() {
+    localStorage.removeItem('accessToken');
+    this.authToken.set(null);
   }
 }

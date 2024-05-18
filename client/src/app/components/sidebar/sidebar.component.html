@@ -1,24 +1,19 @@
-<aside class="w-20 bg-indigo-950 h-full flex items-center flex-col gap-2 py-4">
-  <div
-    class="size-16 bg-indigo-900 rounded-full flex justify-center items-center cursor-pointer hover:bg-violet-700"
-    (click)="openCreateServerModal()"
-  >
-    +
+<aside class="w-20 h-full flex items-center flex-col gap-2 shadow-primary">
+  <div class="h-20 w-full flex items-center justify-center border-b" routerLink="/home">
+    <sidebar-cicle text="SN"></sidebar-cicle>
   </div>
+  <sidebar-cicle text="+" (click)="openCreateServerModal()"></sidebar-cicle>
   @for (server of serverService.servers(); track server.identifier) {
-    <div
-      class="size-16 bg-indigo-900 rounded-full flex justify-center items-center cursor-pointer hover:bg-violet-600"
-      [routerLink]="server.identifier"
-      routerLinkActive="bg-indigo-600 border"
-    >
-      {{ getInitials(server.name) }}
-    </div>
+  <sidebar-cicle
+    [text]="getInitials(server.name)"
+    [routerLink]="server.identifier"
+  ></sidebar-cicle>
   }
 </aside>
 @if (createServerModalOpen()) {
-  <app-modal title="Create server" (closeModal)="closeCreateServerModal()">
-    <app-create-server-form
-      (createComplete)="closeCreateServerModal()"
-    ></app-create-server-form>
-  </app-modal>
+<app-modal title="Create server" (closeModal)="closeCreateServerModal()">
+  <app-create-server-form
+    (createComplete)="closeCreateServerModal()"
+  ></app-create-server-form>
+</app-modal>
 }
